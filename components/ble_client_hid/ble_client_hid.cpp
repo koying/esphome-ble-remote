@@ -106,6 +106,7 @@ void BLEClientHID::gattc_event_handler(esp_gattc_cb_event_t event,
                                        esp_gatt_if_t gattc_if,
                                        esp_ble_gattc_cb_param_t *param) {
   esp_ble_gattc_cb_param_t *p_data = param;
+  ESP_LOGD(TAG, "gattc_event_handler: [%d]", event); 
   switch (event) {
     case ESP_GATTC_CONNECT_EVT: {
       auto ret = esp_ble_set_encryption(param->connect.remote_bda,
