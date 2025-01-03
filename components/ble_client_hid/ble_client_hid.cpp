@@ -182,7 +182,7 @@ void BLEClientHID::gattc_event_handler(esp_gattc_cb_event_t event,
 
 void BLEClientHID::send_input_report_event(std::string& device_name, esp_ble_gattc_cb_param_t *p_data){
   ESP_LOGD(TAG, "Received HID input report from handle %d, device: %s",
-                 p_data->notify.handle, device_name);
+                 p_data->notify.handle, device_name.c_str());
   uint8_t *data = new uint8_t[p_data->notify.value_len + 1];
   memcpy(data + 1, p_data->notify.value, p_data->notify.value_len);
   data[0] = this->handle_report_id[p_data->notify.handle];
