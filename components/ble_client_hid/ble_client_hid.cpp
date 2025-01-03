@@ -197,29 +197,25 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
     } else {
       usage = std::to_string(value.usage.page) + "_" + std::to_string(value.usage.usage);
     }
+    uint16_t value = value.value;
 
     if (value.usage.page == 13 and (value.usage.usage == 50)) {
       continue;
     } else if (value.usage.page == 13 and (value.usage.usage == 66)) {
-      if (value.value == 1) {
+      if (value == 1) {
         last_x = last_y = 0;
         continue;
       } else {
         if ((last_x == 0 or last_x == 500) and (last_x == 0 or last_x == 500)) {
           usage = "Keypad ENTER";
-          value = 0
         } else if (last_x == 999) {
           usage = "Keyboard RightArrow";
-          value = 0
         } else if (last_x == -999) {
           usage = "Keyboard LeftArrow";
-          value = 0
         } else if (last_y == -999) {
           usage = "Keyboard UpArrow";
-          value = 0
         } else if (last_y == 999) {
           usage = "Keyboard DownArrow";
-          value = 0
         }
         last_x = -1;
         last_y = -1;
@@ -244,14 +240,14 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
       continue;
     }
 
-    this->fire_homeassistant_event("esphome.hid_events", {{"usage", usage}, {"value", std::to_string(value.value)}});
+    this->fire_homeassistant_event("esphome.hid_events", {{"usage", usage}, {"value", std::to_string(value)}});
     if(this->last_event_usage_text_sensor != nullptr){
       this->last_event_usage_text_sensor->publish_state(usage);
     }
     if(this->last_event_value_sensor != nullptr){
-      this->last_event_value_sensor->publish_state(value.value);
+      this->last_event_value_sensor->publish_state(value);
     }
-    ESP_LOGD(TAG, "Send HID event to HomeAssistant: usage: %s, value: %d", usage.c_str(), value.value);
+    ESP_LOGD(TAG, "Send HID event to HomeAssistant: usage: %s, value: %d", usage.c_str(), value);
   }
   
   delete[] data;
