@@ -211,14 +211,14 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
       } else {
         if ((last_x == 0 or last_x == 500) and (last_y == 0 or last_y == 500)) {
           usage = "Keypad ENTER";
-        } else if (last_x == 9999) {
-          usage = "Keyboard RightArrow";
-        } else if (last_x == -9999) {
-          usage = "Keyboard LeftArrow";
-        } else if (last_y == -9999) {
-          usage = "Keyboard UpArrow";
-        } else if (last_y == 9999) {
-          usage = "Keyboard DownArrow";
+        // } else if (last_x == 9999) {
+        //   usage = "Keyboard RightArrow";
+        // } else if (last_x == -9999) {
+        //   usage = "Keyboard LeftArrow";
+        // } else if (last_y == -9999) {
+        //   usage = "Keyboard UpArrow";
+        // } else if (last_y == 9999) {
+        //   usage = "Keyboard DownArrow";
         }
         last_x = -1;
         last_y = -1;
@@ -226,21 +226,25 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
     } else if (usage == "X") {
       if (last_x == 0) {
         last_x = send_value;
+        continue;
       } else if (send_value > last_x ) {
-        last_x = -9999;
+        last_x = -9999
+        usage = "Keyboard LeftArrow";
       } else if (send_value < last_x ) {
-        last_x = 9999;
+        last_x = 9999
+        usage = "Keyboard RightArrow";
       }
-      continue;
     } else if (usage == "Y") {
       if (last_y == 0) {
         last_y = send_value;
+        continue;
       } else if (send_value > last_y ) {
-        last_y = -9999;
+        last_y = -9999
+        usage = "Keyboard UpArrow";
       } else if (send_value < last_y ) {
-        last_y = 9999;
+        last_y = 9999
+        usage = "Keyboard DownArrow";
       }
-      continue;
     }
 
     this->fire_homeassistant_event("esphome.hid_events", {{"usage", usage}, {"value", std::to_string(send_value)}});
