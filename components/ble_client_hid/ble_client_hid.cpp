@@ -228,7 +228,7 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
     } else if (usage == "X") {
       if (last_x == -1) {
         continue;
-      else if (last_x == 0) {
+      } else if (last_x == 0) {
         last_x = send_value;
         continue;
       } else if (send_value > last_x ) {
@@ -245,7 +245,7 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
     } else if (usage == "Y") {
       if (last_y == -1) {
         continue;
-      else if (last_y == 0) {
+      } else if (last_y == 0) {
         last_y = send_value;
         continue;
       } else if (send_value > last_y ) {
