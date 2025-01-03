@@ -199,6 +199,8 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
     }
     uint16_t send_value = value.value;
 
+    ESP_LOGD(TAG, "Received HID event: usage: %s, value: %d", usage.c_str(), value.value);
+
     if (value.usage.page == 13 and (value.usage.usage == 50)) {
       continue;
     } else if (value.usage.page == 13 and (value.usage.usage == 66)) {
