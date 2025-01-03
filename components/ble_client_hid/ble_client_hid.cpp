@@ -197,12 +197,12 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
     } else {
       usage = std::to_string(value.usage.page) + "_" + std::to_string(value.usage.usage);
     }
-    uint16_t value = value.value;
+    uint16_t send_value = value.value;
 
     if (value.usage.page == 13 and (value.usage.usage == 50)) {
       continue;
     } else if (value.usage.page == 13 and (value.usage.usage == 66)) {
-      if (value == 1) {
+      if (send_value == 1) {
         last_x = last_y = 0;
         continue;
       } else {
@@ -222,32 +222,32 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
       }
     } else if (usage == "X") {
       if (last_x == 0) {
-        last_x = value;
-      } else if (value > last_x ) {
+        last_x = send_value;
+      } else if (send_value > last_x ) {
         last_x = -999;
-      } else if (value < last_x ) {
+      } else if (send_value < last_x ) {
         last_x = 999;
       }
       continue;
     } else if (usage == "Y") {
       if (last_y == 0) {
-        last_x = value;
-      } else if (value > last_y ) {
+        last_x = send_value;
+      } else if (send_value > last_y ) {
         last_y = -999;
-      } else if (value < last_y ) {
+      } else if (send_value < last_y ) {
         last_y = 999;
       }
       continue;
     }
 
-    this->fire_homeassistant_event("esphome.hid_events", {{"usage", usage}, {"value", std::to_string(value)}});
+    this->fire_homeassistant_event("esphome.hid_events", {{"usage", usage}, {"value", std::to_string(send_value)}});
     if(this->last_event_usage_text_sensor != nullptr){
       this->last_event_usage_text_sensor->publish_state(usage);
     }
     if(this->last_event_value_sensor != nullptr){
-      this->last_event_value_sensor->publish_state(value);
+      this->last_event_value_sensor->publish_state(send_value);
     }
-    ESP_LOGD(TAG, "Send HID event to HomeAssistant: usage: %s, value: %d", usage.c_str(), value);
+    ESP_LOGD(TAG, "Send HID event to HomeAssistant: usage: %s, value: %d", usage.c_str(), send_value);
   }
   
   delete[] data;
