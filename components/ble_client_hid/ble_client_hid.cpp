@@ -209,8 +209,6 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
         last_x = last_y = 0;
         continue;
       } else {
-        last_x = -1;
-        last_y = -1;
         if ((last_x == 0 or last_x == 500) and (last_y == 0 or last_y == 500)) {
           usage = "Keypad ENTER";
         // } else if (last_x == 9999) {
@@ -221,6 +219,8 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
         //   usage = "Keyboard UpArrow";
         // } else if (last_y == 9999) {
         //   usage = "Keyboard DownArrow";
+          last_x = -1;
+          last_y = -1;
         } else {
           continue;
         }
