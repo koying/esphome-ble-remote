@@ -208,13 +208,13 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
       } else {
         if ((last_x == 0 or last_x == 500) and (last_x == 0 or last_x == 500)) {
           usage = "Keypad ENTER";
-        } else if (last_x == 999) {
+        } else if (last_x == 9999) {
           usage = "Keyboard RightArrow";
-        } else if (last_x == -999) {
+        } else if (last_x == -9999) {
           usage = "Keyboard LeftArrow";
-        } else if (last_y == -999) {
+        } else if (last_y == -9999) {
           usage = "Keyboard UpArrow";
-        } else if (last_y == 999) {
+        } else if (last_y == 9999) {
           usage = "Keyboard DownArrow";
         }
         last_x = -1;
@@ -224,18 +224,18 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
       if (last_x == 0) {
         last_x = send_value;
       } else if (send_value > last_x ) {
-        last_x = -999;
+        last_x = -9999;
       } else if (send_value < last_x ) {
-        last_x = 999;
+        last_x = 9999;
       }
       continue;
     } else if (usage == "Y") {
       if (last_y == 0) {
         last_y = send_value;
       } else if (send_value > last_y ) {
-        last_y = -999;
+        last_y = -9999;
       } else if (send_value < last_y ) {
-        last_y = 999;
+        last_y = 9999;
       }
       continue;
     }
