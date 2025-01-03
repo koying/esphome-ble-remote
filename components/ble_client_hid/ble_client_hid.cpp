@@ -224,30 +224,34 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
         last_y = -1;
       }
     } else if (usage == "X") {
-      if (last_x == 0) {
+      if (last_x == -1) {
+        continue;
+      else if (last_x == 0) {
         last_x = send_value;
         continue;
       } else if (send_value > last_x ) {
-        last_x = 9999;
+        last_x = -1;
         usage = "Keyboard LeftArrow";
         send_value = 0;
       } else if (send_value < last_x ) {
-        last_x = -9999;
+        last_x = -1;
         usage = "Keyboard RightArrow";
         send_value = 0;
       } else {
         continue;
       }
     } else if (usage == "Y") {
-      if (last_y == 0) {
+      if (last_y == -1) {
+        continue;
+      else if (last_y == 0) {
         last_y = send_value;
         continue;
       } else if (send_value > last_y ) {
-        last_y = 9999;
+        last_y = -1;
         usage = "Keyboard UpArrow";
         send_value = 0;
       } else if (send_value < last_y ) {
-        last_y = -9999;
+        last_y = -1;
         usage = "Keyboard DownArrow";
         send_value = 0;
       } else {
