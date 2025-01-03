@@ -88,6 +88,8 @@ class BLEClientHID : public Component, public api::CustomAPIDevice, public ble_c
   std::string device_name;
   std::string manufacturer;
   std::string serial_number;
+  int16_t last_x = -1;
+  int16_t last_y = -1;
   
 };
 
