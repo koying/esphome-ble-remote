@@ -170,7 +170,7 @@ void BLEClientHID::gattc_event_handler(esp_gattc_cb_event_t event,
         this->battery_sensor->publish_state(battery_level);
       } else {
         // has to be hid report
-        this->send_input_report_event(p_data);
+        this->send_input_report_event(this->device_name, p_data);
       }
       break;
     }
@@ -180,9 +180,9 @@ void BLEClientHID::gattc_event_handler(esp_gattc_cb_event_t event,
   }
 }
 
-void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
-  ESP_LOGD(TAG, "Received HID input report from handle %d",
-                 p_data->notify.handle);
+void BLEClientHID::send_input_report_event(std::string& device_name, esp_ble_gattc_cb_param_t *p_data){
+  ESP_LOGD(TAG, "Received HID input report from handle %d, device: %s",
+                 p_data->notify.handle, device_name);
   uint8_t *data = new uint8_t[p_data->notify.value_len + 1];
   memcpy(data + 1, p_data->notify.value, p_data->notify.value_len);
   data[0] = this->handle_report_id[p_data->notify.handle];
@@ -261,7 +261,7 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
       }
     }
 
-    this->fire_homeassistant_event("esphome.hid_events", {{"usage", usage}, {"value", std::to_string(send_value)}});
+    this->fire_homeassistant_event("esphome.hid_events", {{"usage", usage}, {"device", device_name}, {"value", std::to_string(send_value)}});
     if(this->last_event_usage_text_sensor != nullptr){
       this->last_event_usage_text_sensor->publish_state(usage);
     }
