@@ -41,8 +41,9 @@ class GATTReadData {
     GATTReadData(uint16_t handle, uint8_t *value, uint16_t value_len){
       this->handle_ = handle;
       this->value_len_ = value_len;
-      this->value_ = new uint8_t[value_len];
+      this->value_ = new uint8_t[value_len+1];
       memcpy(this->value_, value, sizeof(uint8_t) * value_len);
+      this->value_[value_len] = \0;
     }
     ~GATTReadData(){
       delete value_;
