@@ -70,7 +70,7 @@ class BLEClientHID : public Component, public api::CustomAPIDevice, public ble_c
   void configure_hid_client();
   
  protected:
-  void send_input_report_event(esp_ble_gattc_cb_param_t *p_data);
+  void send_input_report_event(std::string& device_name, esp_ble_gattc_cb_param_t *p_data);
   uint8_t *parse_characteristic_data(ble_client::BLEService *service, uint16_t uuid);
   HIDReportMap* hid_report_map;
   std::vector<ble_client::BLECharacteristic *> characteristics;
