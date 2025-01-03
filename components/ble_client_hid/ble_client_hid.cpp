@@ -209,7 +209,7 @@ void BLEClientHID::send_input_report_event(esp_ble_gattc_cb_param_t *p_data){
         last_x = last_y = 0;
         continue;
       } else {
-        if ((last_x == 0 or last_x == 500) and (last_y == 0 or last_y == 500)) {
+        if (last_x != -1 and last_y != -1) {
           usage = "Keypad ENTER";
         // } else if (last_x == 9999) {
         //   usage = "Keyboard RightArrow";
