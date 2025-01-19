@@ -410,7 +410,7 @@ namespace esphome
         int32_t value = parse_input_report_item(report_data, this->report_offset + i * this->report_size, this->report_size, this->logical_range);
         if (value > this->logical_range.maximum || value < this->logical_range.minimum)
         {
-          ESP_LOGD(TAG, "Value out of range: %d", value);
+          ESP_LOGD(TAG, "Variable value out of range: %d (%d / %d)", value, this->logical_range.maximum, this->logical_range.minimum);
           continue;
         }
         if (this->last_values[i].raw_value == value)
@@ -432,7 +432,7 @@ namespace esphome
         int32_t value = parse_input_report_item(report_data, this->report_offset + i * this->report_size, this->report_size, this->logical_range);
         if (value > this->logical_range.maximum || value < this->logical_range.minimum)
         {
-          ESP_LOGD(TAG, "Value out of range");
+          ESP_LOGD(TAG, "Array value out of range: %d (%d / %d)", value, this->logical_range.maximum, this->logical_range.minimum);
           value = 0;
         }
         if(value == 0){
