@@ -410,7 +410,7 @@ namespace esphome
         int32_t value = parse_input_report_item(report_data, this->report_offset + i * this->report_size, this->report_size, this->logical_range);
         if (value > this->logical_range.maximum || value < this->logical_range.minimum)
         {
-          ESP_LOGD(TAG, "Variable value out of range: %d (%d / %d)", value, this->logical_range.maximum, this->logical_range.minimum);
+          ESP_LOGD(TAG, "Variable value out of range:  %d (s: %d / lM: %d / lm: %d): %s", value, this->report_size, this->logical_range.maximum, this->logical_range.minimum, esphome::format_hex(report_data, this->report_size));
           continue;
         }
         if (this->last_values[i].raw_value == value)
