@@ -259,8 +259,8 @@ namespace esphome
         case HID_ITEM_TYPE_TAG_INPUT:
 
         {
-          ESP_LOGD(TAG, "Found input main item");
           uint16_t item_flags = report_item_data;
+          ESP_LOGD(TAG, "Found input main item: f: 0x%X", item_flags);
 
           if (state_table.report_id == 0)
           {
@@ -437,7 +437,7 @@ namespace esphome
         int32_t value = parse_input_report_item(report_data, this->report_offset + i * this->report_size, this->report_size, this->logical_range);
         if (value > this->logical_range.maximum || value < this->logical_range.minimum)
         {
-          ESP_LOGD(TAG, "Array value out of range: %d (s: %d / o: %d / lM: %d / lm: %d): %s", value, this->report_size, this->report_offset, this->logical_range.maximum, this->logical_range.minimum, esphome::format_hex_pretty(report_data, this->report_size).c_str());
+          ESP_LOGD(TAG, "Array value out of range: %d (s: %d / o: %d / lM: %d / lm: %d): %s", value, this->report_size, this->report_offset, this->logical_range.maximum, this->logical_range.minimum, esphome::format_hex_pretty(report_data, this->report_size / 8).c_str());
           value = 0;
         }
         if(value == 0){
