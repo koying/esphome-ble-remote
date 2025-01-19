@@ -182,12 +182,14 @@ namespace esphome
 
         case HID_ITEM_TYPE_TAG_LOGICAL_MINIMUM:
         {
+          ESP_LOGD(TAG, "log minimum: %X", report_item_data);
           state_table.logical_range.minimum = report_item_data;
           break;
         }
 
         case HID_ITEM_TYPE_TAG_LOGICAL_MAXIMUM:
         {
+          ESP_LOGD(TAG, "log maximum: %X", report_item_data);
           state_table.logical_range.maximum = report_item_data;
           break;
         }
