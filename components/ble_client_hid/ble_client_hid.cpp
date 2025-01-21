@@ -186,6 +186,7 @@ void BLEClientHID::send_input_report_event(std::string& device_name, esp_ble_gat
   uint8_t *data = new uint8_t[p_data->notify.value_len + 1];
   memcpy(data + 1, p_data->notify.value, p_data->notify.value_len);
   data[0] = this->handle_report_id[p_data->notify.handle];
+  ESP_LOGD(TAG, "--- data: %s", esphome::format_hex_pretty(data, p_data->notify.value_len + 1).c_str());
   std::vector<HIDReportItemValue> hid_report_values = this->hid_report_map->parse(data);
   if(hid_report_values.size() == 0){
     delete[] data;
