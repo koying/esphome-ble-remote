@@ -162,6 +162,7 @@ void BLEClientHID::gattc_event_handler(esp_gattc_cb_event_t event,
     }
     case ESP_GATTC_NOTIFY_EVT: {
       ESP_LOGD(TAG, "ESP_GATTC_NOTIFY_EVT: %d / %d", param->notify.conn_id, p_data->notify.handle);
+      ESP_LOGD(TAG, "--- data: %s", esphome::format_hex_pretty(p_data->notify.value, p_data->notify.value_len + 1).c_str());
       if (param->notify.conn_id != this->parent()->get_conn_id()) break;
       if (p_data->notify.handle == this->battery_handle) {
         uint8_t battery_level = p_data->notify.value[0];
